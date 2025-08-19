@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lux Party</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
+    <!-- Enlace al archivo CSS externo corregido -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-slate-950 text-white flex items-center justify-center min-h-screen p-4">
+
+    <!-- Contenedor para los efectos de fondo -->
+    <div id="embers-container"></div>
+
+    <!-- Contenedor principal de la aplicación -->
+    <div id="game-container" class="w-full max-w-xl mx-auto bg-slate-900 rounded-3xl party-glow p-8 md:p-12 text-center relative z-10">
+
+        <!-- Pantalla del Menú Principal -->
+        <div id="main-menu">
+            <h1 class="text-4xl md:text-5xl font-extrabold highlight-text mb-6">Lux Party</h1>
+            <p class="text-gray-300 mb-8">Elige tu juego para empezar la fiesta.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                <!-- Tarjeta de Girar la Botella -->
+                <button id="select-bottle-game-btn" class="game-card flex flex-col items-center justify-center p-6 bg-slate-800 rounded-2xl shadow-lg cursor-pointer">
+                    <!-- SVG de la botella inclinada -->
+                    <svg class="w-16 h-16 text-fuchsia-400 mb-3" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <g transform="rotate(15 12 12)">
+                            <!-- Cuerpo de la botella -->
+                            <path d="M9.5 20.5C9.5 20.5 6 20.5 6 17.5V11.5C6 8.5 9.5 8.5 9.5 8.5H14.5C14.5 8.5 18 8.5 18 11.5V17.5C18 20.5 14.5 20.5 14.5 20.5H9.5Z" fill="currentColor" opacity="0.8"/>
+                            <!-- Cuello de la botella -->
+                            <path d="M10.5 8.5V4.5C10.5 4.5 11 3.5 12 3.5C13 3.5 13.5 4.5 13.5 4.5V8.5H10.5Z" fill="currentColor"/>
+                            <!-- Tapa -->
+                            <rect x="10.5" y="3" width="3" height="1.5" rx="0.75" fill="#E879F9"/>
+                            <!-- Etiqueta -->
+                            <rect x="9.5" y="13" width="5" height="3" rx="1" fill="#fff" opacity="0.5"/>
+                        </g>
+                    </svg>
+                    <span class="text-xl font-bold text-white">Girar la Botella</span>
+                </button>
+                
+                <!-- Tarjeta de Verdad o Reto -->
+                <button id="select-truth-dare-btn" class="game-card flex flex-col items-center justify-center p-6 bg-slate-800 rounded-2xl shadow-lg cursor-pointer">
+                    <!-- SVG del ángel y diablo con ala y cuernos (diseño simple) -->
+                    <svg class="w-16 h-16 mb-3" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Mitad del diablo (rojo) -->
+                        <path d="M12 2.05L12 21.95L19.46 19.34C20.67 18.91 21.5 17.8 21.5 16.5V7.5C21.5 6.2 20.67 5.09 19.46 4.66L12 2.05Z" fill="#EF4444"/>
+                        <!-- Cuernos simples de diablo -->
+                        <path d="M15 5 L16 3 L17 5 M18 5 L19 3 L20 5" stroke="#7F1D1D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        
+                        <!-- Mitad del ángel (azul) -->
+                        <path d="M12 2.05L12 21.95L4.54 19.34C3.33 18.91 2.5 17.8 2.5 16.5V7.5C2.5 6.2 3.33 5.09 4.54 4.66L12 2.05Z" fill="#3B82F6"/>
+                        <!-- Ala simple de ángel -->
+                        <path d="M9 7 L6 13 L9 19" stroke="#DBEAFE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <span class="text-xl font-bold text-white">Verdad o Reto</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Pantalla de configuración de jugadores (para Girar la Botella) -->
+        <div id="bottle-game" class="hidden">
+            <!-- Botón de regreso universal para el menú principal -->
+            <button id="back-to-main-from-setup-bottle" class="absolute top-6 left-6 p-2 rounded-full bg-slate-800 hover:bg-slate-700 transition-colors duration-300">
+                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                </svg>
+            </button>
+            <div id="player-setup" class="transition-opacity duration-500 ease-in-out">
+                <h1 class="text-4xl md:text-5xl font-extrabold highlight-text mb-6">Girar la Botella</h1>
+                <p class="text-gray-300 mb-8">¡Añade a los jugadores para empezar la diversión!</p>
+                
+                <div id="players-list-bottle" class="space-y-4"></div>
+
+                <div class="mt-8 space-y-4">
+                    <button id="add-player-btn-bottle" class="w-full flex items-center justify-center px-6 py-3 bg-slate-800 text-white font-bold rounded-xl shadow-lg hover:bg-slate-700 transition-colors duration-300">
+                        <span class="text-2xl mr-2">+</span> Añadir otro jugador
+                    </button>
+                    <!-- Nuevo botón para retos personalizados (único para este juego) -->
+                    <button id="open-custom-questions-btn" class="w-full px-6 py-3 bg-slate-800 text-white font-bold rounded-xl shadow-lg hover:bg-slate-700 transition-colors duration-300">
+                        Añadir retos personalizados
+                    </button>
+                    <button id="start-game-btn" class="w-full px-6 py-3 bg-fuchsia-600 text-white text-lg font-bold rounded-xl shadow-lg hover:bg-fuchsia-500 transition-all duration-300">
+                        Empezar juego
+                    </button>
+                    <button id="toggle-spicy-btn-bottle" class="w-full px-6 py-3 bg-slate-800 text-white text-lg font-bold rounded-xl shadow-lg transition-colors duration-300">
+                        Modo Picante <span class="ml-2 px-2 py-1 bg-red-400 text-white text-sm font-bold rounded-full">+18</span>
+                    </button>
+                </div>
+
+                <p id="error-message-bottle" class="text-red-400 mt-4 hidden">Debes añadir al menos 2 jugadores.</p>
+            </div>
+
+            <!-- Pantalla del juego principal -->
+            <div id="main-game-bottle" class="hidden transition-opacity duration-500 ease-in-out">
+                <!-- Botón de regreso universal para el menú principal -->
+                <button id="back-to-main-from-game-bottle" class="absolute top-6 left-6 p-2 rounded-full bg-slate-800 hover:bg-slate-700 transition-colors duration-300">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                    </svg>
+                </button>
+                <h1 class="text-4xl md:text-5xl font-extrabold highlight-text mb-6">¡Gira la botella de Lux Party!</h1>
+                
+                <p id="game-status-bottle" class="text-gray-300 mb-8 text-lg md:text-xl">Haz clic en la botella para girarla.</p>
+
+                <div id="bottle-container" class="relative w-48 h-48 mx-auto mb-8">
+                    <svg id="bottle-svg" class="bottle-svg w-full h-full" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M45 10 L55 10 L55 15 C55 20 60 25 65 25 L75 25 C80 25 80 30 80 35 L80 90 C80 95 75 99 70 99 L30 99 C25 99 20 95 20 90 L20 35 C20 30 20 25 25 25 L35 25 C40 25 45 20 45 15 L45 10 Z" fill="#C026D3" stroke="#86198F" stroke-width="2"/>
+                        <rect x="40" y="5" width="20" height="8" rx="4" fill="#E879F9"/>
+                        <rect x="42" y="10" width="16" height="4" rx="2" fill="#86198F"/>
+                    </svg>
+                </div>
+
+                <button id="spin-btn" class="px-6 py-3 bg-fuchsia-600 text-white text-lg font-bold rounded-xl shadow-lg hover:bg-fuchsia-500 transition-colors duration-300">
+                    Girar la Botella
+                </button>
+                
+                <div class="mt-4 space-y-4">
+                    <!-- Botón para regresar a la configuración de jugadores -->
+                    <button id="back-to-setup-btn-bottle" class="w-full px-6 py-3 bg-slate-800 text-white font-bold rounded-xl shadow-lg hover:bg-slate-700 transition-colors duration-300">
+                        Volver a la configuración
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pantalla de Verdad o Reto -->
+        <div id="verdad-o-reto" class="hidden">
+            <!-- Botón de regreso universal para el menú principal -->
+            <button id="back-to-main-from-vr-setup" class="absolute top-6 left-6 p-2 rounded-full bg-slate-800 hover:bg-slate-700 transition-colors duration-300">
+                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                </svg>
+            </button>
+
+            <!-- Pantalla de configuración de jugadores para Verdad o Reto -->
+            <div id="player-setup-vr" class="transition-opacity duration-500 ease-in-out">
+                <h1 class="text-4xl md:text-5xl font-extrabold highlight-text mb-6">Verdad o Reto</h1>
+                <p class="text-gray-300 mb-8">¡Añade a los jugadores para empezar la diversión!</p>
+                
+                <div id="players-list-vr" class="space-y-4"></div>
+
+                <div class="mt-8 space-y-4">
+                    <button id="add-player-btn-vr" class="w-full flex items-center justify-center px-6 py-3 bg-slate-800 text-white font-bold rounded-xl shadow-lg hover:bg-slate-700 transition-colors duration-300">
+                        <span class="text-2xl mr-2">+</span> Añadir otro jugador
+                    </button>
+                     <!-- Nuevo botón para preguntas personalizadas -->
+                     <button id="open-custom-questions-vr-btn" class="w-full px-6 py-3 bg-slate-800 text-white font-bold rounded-xl shadow-lg hover:bg-slate-700 transition-colors duration-300">
+                        Añadir preguntas personalizadas
+                    </button>
+                    <button id="start-vr-btn" class="w-full px-6 py-3 bg-fuchsia-600 text-white text-lg font-bold rounded-xl shadow-lg hover:bg-fuchsia-500 transition-all duration-300">
+                        JUGAR
+                    </button>
+                    <button id="toggle-spicy-btn-vr" class="w-full px-6 py-3 bg-slate-800 text-white text-lg font-bold rounded-xl shadow-lg transition-colors duration-300">
+                        Modo Picante <span class="ml-2 px-2 py-1 bg-red-400 text-white text-sm font-bold rounded-full">+18</span>
+                    </button>
+                </div>
+
+                <p id="error-message-vr" class="text-red-400 mt-4 hidden">Debes añadir al menos 2 jugadores.</p>
+            </div>
+
+            <!-- Pantalla del juego principal de Verdad o Reto -->
+            <div id="main-game-vr" class="hidden transition-opacity duration-500 ease-in-out">
+                <h1 class="text-4xl md:text-5xl font-extrabold highlight-text mb-6">¡Lux Party!</h1>
+                
+                <p id="vr-challenge-type" class="text-3xl font-extrabold text-fuchsia-500 mb-4 transition-colors duration-300"></p>
+                <p id="vr-player-name" class="text-4xl font-extrabold text-white mb-8"></p>
+                <!-- Nuevo elemento para mostrar el texto de la verdad o reto -->
+                <p id="vr-challenge-text" class="text-lg text-gray-300 mb-8 px-4"></p>
+
+                <!-- Contenedor del dado (se oculta si hay temporizador) -->
+                <div id="dice-container" class="relative w-48 h-48 mx-auto mb-8 flex items-center justify-center">
+                    <svg id="dice-svg" class="w-24 h-24" viewBox="0 0 24 24" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="2" y="2" width="20" height="20" rx="4" ry="4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-fuchsia-400 fill-fuchsia-500"></rect>
+                        <circle cx="8" cy="8" r="1.5" fill="#fff"/>
+                        <circle cx="16" cy="16" r="1.5" fill="#fff"/>
+                    </svg>
+                </div>
+                
+                <!-- NUEVO: Contenedor del temporizador (se muestra solo en retos cronometrados) -->
+                <div id="timer-container" class="w-full max-w-sm mx-auto flex flex-col items-center space-y-4">
+                    <p id="timer-countdown" class="text-white text-6xl font-extrabold"></p>
+                    <div id="timer-bar-container" class="h-6 w-full bg-gray-700 rounded-full">
+                        <div id="timer-bar" class="h-full bg-fuchsia-500 rounded-full transition-all duration-100 ease-linear" style="width: 100%;"></div>
+                    </div>
+                    <button id="start-timer-btn" class="px-6 py-3 bg-fuchsia-600 text-white text-lg font-bold rounded-xl shadow-lg hover:bg-fuchsia-500 transition-colors duration-300">
+                        ¡Listo!
+                    </button>
+                </div>
+                
+                <button id="roll-dice-btn" class="px-6 py-3 bg-fuchsia-600 text-white text-lg font-bold rounded-xl shadow-lg hover:bg-fuchsia-500 transition-colors duration-300">
+                    Girar el dado
+                </button>
+                
+                <div class="mt-4 space-y-4">
+                    <button id="back-to-setup-btn-vr" class="w-full px-6 py-3 bg-slate-800 text-white font-bold rounded-xl shadow-lg hover:bg-slate-700 transition-colors duration-300">
+                        Volver a la configuración
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para gestionar preguntas personalizadas -->
+    <div id="custom-questions-modal" class="hidden">
+        <div class="modal-content">
+            <h2 class="text-3xl font-extrabold highlight-text mb-6">Preguntas Personalizadas</h2>
+            
+            <div id="custom-truths-section">
+                <div class="flex flex-col md:flex-row gap-4 mb-6">
+                    <input type="text" id="custom-truth-input" placeholder="Añadir una nueva verdad" class="flex-grow bg-slate-800 text-white rounded-xl p-3 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-fuchsia-500 transition-colors">
+                    <button id="add-custom-truth-btn" class="px-6 py-3 bg-fuchsia-600 text-white font-bold rounded-xl shadow-lg hover:bg-fuchsia-500 transition-all duration-300">
+                        Añadir Verdad
+                    </button>
+                </div>
+                <h3 class="text-2xl font-bold text-white mt-8 mb-4">Verdades Personalizadas</h3>
+                <ul id="custom-truths-list" class="space-y-2 mb-6"></ul>
+            </div>
+
+            <div id="custom-dares-section">
+                <div class="flex flex-col md:flex-row gap-4 mb-6">
+                    <input type="text" id="custom-dare-input" placeholder="Añadir un nuevo reto" class="flex-grow bg-slate-800 text-white rounded-xl p-3 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-fuchsia-500 transition-colors">
+                    <button id="add-custom-dare-btn" class="px-6 py-3 bg-fuchsia-600 text-white font-bold rounded-xl shadow-lg hover:bg-fuchsia-500 transition-all duration-300">
+                        Añadir Reto
+                    </button>
+                </div>
+                <h3 class="text-2xl font-bold text-white mt-8 mb-4">Retos Personalizados</h3>
+                <ul id="custom-dares-list" class="space-y-2 mb-6"></ul>
+            </div>
+            
+            <button id="close-modal-btn" class="w-full px-6 py-3 bg-slate-800 text-white font-bold rounded-xl shadow-lg hover:bg-slate-700 transition-colors duration-300 mt-6">
+                Cerrar
+            </button>
+        </div>
+    </div>
+
+    <!-- Enlace al archivo JavaScript externo corregido -->
+    <script src="js/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,251 @@
+/* Estilos base */
+body {
+    font-family: 'Inter', sans-serif;
+    background: #0f172a;
+    transition: background 0.5s ease-in-out;
+    overflow-x: hidden; /* Prevenir scroll horizontal por efectos */
+}
+
+#main-menu, #bottle-game, #verdad-o-reto, #custom-questions-modal {
+    transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
+}
+
+#game-container {
+    transition: background 0.5s ease-in-out, box-shadow 0.5s ease-in-out;
+}
+
+.bottle-svg {
+    cursor: pointer;
+    transition: transform 6s ease-out;
+    transform-origin: center;
+}
+
+.bottle-svg.spinning {
+    transform: rotate(var(--spin-angle));
+}
+
+.party-glow {
+    box-shadow: 0 0 10px rgba(192, 38, 211, 0.5), 0 0 20px rgba(192, 38, 211, 0.3), 0 0 40px rgba(192, 38, 211, 0.2);
+    transition: box-shadow 0.5s ease;
+    animation: neon-glow-pulse 2s infinite ease-in-out alternate;
+}
+
+/* Título del juego con color de texto blanco */
+.highlight-text {
+    color: white; /* Color de las letras del título */
+    text-shadow: 0 0 5px #c026d3, 0 0 10px #c026d3, 0 0 20px #c026d3, 0 0 40px #c026d3, 0 0 60px #c026d3;
+    transition: color 0.5s ease-in-out, text-shadow 0.5s ease-in-out;
+}
+
+.dynamic-color {
+    color: #c026d3;
+    transition: color 0.5s ease-in-out;
+}
+
+/* ANIMACIÓN NUEVA: Efecto de pulso para el nombre del jugador */
+@keyframes pulse-player-name {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.05); opacity: 0.8; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.player-selected-pulse {
+    animation: pulse-player-name 1s infinite alternate;
+}
+
+.game-card {
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+.game-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 15px rgba(192, 38, 211, 0.3);
+}
+
+/* --- TEMA MODO PICANTE (+18) --- */
+
+/* Animación para el fondo pulsante */
+@keyframes spicy-background-pulse {
+    0%, 100% { background-color: #1A0307; }
+    50% { background-color: #2F0511; }
+}
+
+.spicy-theme {
+    animation: spicy-background-pulse 10s infinite ease-in-out;
+}
+
+.spicy-theme #game-container {
+    background: #440611;
+}
+
+/* Animación de glow pulsante para el contenedor principal */
+@keyframes spicy-glow-pulse {
+    0%, 100% { box-shadow: 0 0 25px rgba(255, 0, 110, 0.7), 0 0 60px rgba(230, 0, 116, 0.5); }
+    50% { box-shadow: 0 0 35px rgba(255, 20, 147, 0.9), 0 0 80px rgba(255, 20, 147, 0.7); }
+}
+@keyframes neon-glow-pulse {
+    0% {
+        box-shadow: 0 0 10px rgba(192, 38, 211, 0.5), 0 0 20px rgba(192, 38, 211, 0.3), 0 0 40px rgba(192, 38, 211, 0.2);
+    }
+    100% {
+        box-shadow: 0 0 15px rgba(192, 38, 211, 0.7), 0 0 30px rgba(192, 38, 211, 0.5), 0 0 60px rgba(192, 38, 211, 0.4);
+    }
+}
+
+.spicy-theme .party-glow {
+    animation: spicy-glow-pulse 3s infinite ease-in-out;
+}
+
+/* Color de sombra del título en modo picante */
+.spicy-theme .highlight-text {
+    color: white; /* Color de las letras del título en modo picante */
+    text-shadow: 0 0 8px #FF1493, 0 0 16px #FF1493, 0 0 32px #FF1493;
+}
+
+.spicy-theme .dynamic-color {
+    color: #FF69B4;
+}
+
+.spicy-theme .player-name-input:focus {
+    --tw-ring-color: #FF1493;
+}
+
+.spicy-theme #bottle-svg path {
+    fill: #C2005A;
+    stroke: #7B002F;
+}
+.spicy-theme #bottle-svg rect:first-of-type {
+    fill: #FF69B4;
+}
+.spicy-theme #bottle-svg rect:last-of-type {
+    fill: #7B002F;
+}
+
+/* --- Estilos para el dado de Verdad o Reto --- */
+#dice-svg {
+    transform-origin: center;
+}
+
+/* Animación para el dado */
+@keyframes dice-roll {
+    0% { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
+    25% { transform: rotateX(900deg) rotateY(1080deg) rotateZ(1260deg); }
+    50% { transform: rotateX(1800deg) rotateY(1980deg) rotateZ(2160deg); }
+    75% { transform: rotateX(2700deg) rotateY(3060deg) rotateZ(3240deg); }
+    100% { transform: rotateX(3600deg) rotateY(3600deg) rotateZ(3600deg); }
+}
+
+.dice-rolling {
+    animation: dice-roll 2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Estilo para el reto rojo pulsante */
+@keyframes pulse-red {
+    0%, 100% { transform: scale(1); filter: drop-shadow(0 0 5px #ef4444) drop-shadow(0 0 10px #ef4444); }
+    50% { transform: scale(1.1); filter: drop-shadow(0 0 10px #ef4444) drop-shadow(0 0 20px #ef4444); }
+}
+
+.challenge-red {
+    color: #EF4444;
+    animation: pulse-red 1.5s infinite ease-in-out;
+    font-weight: bold;
+}
+
+/* --- EFECTO DE ASCUAS FLOTANTES --- */
+#embers-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 0;
+}
+
+.ember {
+    position: absolute;
+    bottom: -20px;
+    background-color: #ffca28;
+    border-radius: 50%;
+    opacity: 0;
+    animation: float-up 10s infinite linear;
+}
+
+@keyframes float-up {
+    0% {
+        transform: translateY(0) translateX(0);
+        opacity: 0;
+    }
+    10%, 90% {
+        opacity: 0.8;
+    }
+    100% {
+        transform: translateY(-105vh) translateX(20px);
+        opacity: 0;
+    }
+}
+
+/* --- ESTILOS PARA EL TEMPORIZADOR DE RETOS --- */
+#timer-container {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
+}
+
+#timer-container.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+#timer-bar-container {
+    width: 100%;
+    background-color: #4b5563; /* gray-600 */
+    border-radius: 9999px; /* full */
+}
+
+#timer-bar {
+    height: 1.5rem; /* h-6 */
+    background-color: #c026d3; /* fuchsia-600 */
+    border-radius: 9999px; /* full */
+    transition: width 1s linear;
+}
+
+@keyframes heartbeat {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+.palpitate {
+    animation: heartbeat 0.7s infinite ease-in-out;
+    color: #ef4444; /* red-500 */
+    font-size: 3rem; /* text-5xl */
+    text-shadow: 0 0 10px #f87171;
+}
+
+/* Estilos del modal para preguntas personalizadas */
+#custom-questions-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+    z-index: 100;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+.modal-content {
+    background: #1e293b;
+    border-radius: 1.5rem;
+    padding: 2rem;
+    width: 100%;
+    max-width: 600px;
+    max-height: 90%;
+    overflow-y: auto;
+    position: relative;
+}
